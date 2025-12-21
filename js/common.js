@@ -11,4 +11,3 @@ function showToast(msg) {
   // 3. 显示
   toast.show();
 }
-showToast("Hello World!");
