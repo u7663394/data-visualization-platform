@@ -16,7 +16,7 @@ async function getData() {
     url: "/dashboard",
   });
   // 2. 渲染数据
-  const overview = res.data.data.overview;
+  const overview = res.data.overview;
   Object.keys(overview).forEach((key) => {
     document.querySelector(`.${key}`).innerText = overview[key];
   });

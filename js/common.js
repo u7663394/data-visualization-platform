@@ -66,7 +66,8 @@ axios.interceptors.request.use(
 */
 axios.interceptors.response.use(
   function (response) {
-    return response;
+    // 统一剥离数据
+    return response.data;
   },
   function (error) {
     // 1. 判断token失效(401)

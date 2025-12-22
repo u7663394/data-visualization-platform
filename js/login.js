@@ -27,10 +27,10 @@ document.querySelector("#btn-login").addEventListener("click", async () => {
   // 3. 提交
   try {
     const res = await axios.post("/login", { username, password });
-    showToast(res.data.message);
+    showToast(res.message);
     // 4. 缓存响应数据
-    localStorage.setItem("token", res.data.data.token);
-    localStorage.setItem("username", res.data.data.username);
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("username", res.data.username);
     // 5. 跳转到首页
     setTimeout(() => {
       window.location.href = "./index.html";

@@ -25,7 +25,7 @@ document.querySelector("#btn-register").addEventListener("click", async () => {
   // 3. 提交
   try {
     const res = await axios.post("/register", { username, password });
-    showToast(res.data.message);
+    showToast(res.message);
   } catch (error) {
     showToast(error.response.data.message);
   }
