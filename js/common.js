@@ -23,3 +23,11 @@ function checkLogin() {
     }, 1500);
   }
 }
+
+// 抽取渲染用户名函数
+function renderUsername() {
+  // 1. 读取
+  const username = localStorage.getItem("username");
+  // 2. 渲染
+  document.querySelector(".username").innerText = username;
+}
