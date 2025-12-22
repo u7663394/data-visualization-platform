@@ -42,3 +42,18 @@ function logout() {
     window.location.href = "./login.html";
   });
 }
+
+// 添加请求拦截器
+axios.interceptors.request.use(
+  function (config) {
+    // 每次发请求前，统一设置token
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers["Authorization"] = token;
+    }
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);

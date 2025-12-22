@@ -17,12 +17,8 @@ logout();
 async function getData() {
   try {
     // 1. 调用接口
-    const token = localStorage.getItem("token");
     const res = await axios({
       url: "/dashboard",
-      headers: {
-        Authorization: token,
-      },
     });
     // 2. 渲染数据
     const overview = res.data.data.overview;
