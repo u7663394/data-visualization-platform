@@ -9,34 +9,16 @@ logout();
   首页数据统计功能: 
     1. 调用接口
     2. 渲染数据
-  首页登录token过期/被篡改:
-    1. 判断token失效(401)
-    2. 删除缓存并提示用户
-    3. 返回登录页面 
 */
 async function getData() {
-  try {
-    // 1. 调用接口
-    const res = await axios({
-      url: "/dashboard",
-    });
-    // 2. 渲染数据
-    const overview = res.data.data.overview;
-    Object.keys(overview).forEach((key) => {
-      document.querySelector(`.${key}`).innerText = overview[key];
-    });
-  } catch (error) {
-    // 1. 判断token失效(401)
-    if (error.response.status === 401) {
-      // 2. 删除缓存并提示用户
-      localStorage.removeItem("token");
-      localStorage.removeItem("username");
-      showToast("账号已过期，请重新登录或注册！");
-      // 3. 返回登录页面
-      setTimeout(() => {
-        window.location.href = "./login.html";
-      }, 1500);
-    }
-  }
+  // 1. 调用接口
+  const res = await axios({
+    url: "/dashboard",
+  });
+  // 2. 渲染数据
+  const overview = res.data.data.overview;
+  Object.keys(overview).forEach((key) => {
+    document.querySelector(`.${key}`).innerText = overview[key];
+  });
 }
 getData();

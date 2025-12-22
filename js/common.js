@@ -57,3 +57,29 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+/* 
+  添加响应拦截器，统一处理token失效
+    1. 判断token失效(401)
+    2. 删除缓存并提示用户
+    3. 返回登录页面 
+*/
+axios.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    // 1. 判断token失效(401)
+    if (error.response.status === 401) {
+      // 2. 删除缓存并提示用户
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      showToast("账号已过期，请重新登录或注册！");
+      // 3. 返回登录页面
+      setTimeout(() => {
+        window.location.href = "./login.html";
+      }, 1500);
+    }
+    return Promise.reject(error);
+  }
+);
