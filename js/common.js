@@ -31,3 +31,14 @@ function renderUsername() {
   // 2. 渲染
   document.querySelector(".username").innerText = username;
 }
+
+// 抽取退出登录函数
+function logout() {
+  document.querySelector("#logout").addEventListener("click", () => {
+    // 1. 清除缓存数据
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    // 2. 跳转到登录页面
+    window.location.href = "./login.html";
+  });
+}
