@@ -11,3 +11,15 @@ function showToast(msg) {
   // 3. 显示
   toast.show();
 }
+
+// 抽取登录校验函数
+function checkLogin() {
+  // 1. 判断token
+  const token = localStorage.getItem("token");
+  if (!token) {
+    showToast("请先登录");
+    setTimeout(() => {
+      window.location.href = "./login.html";
+    }, 1500);
+  }
+}
