@@ -4,9 +4,15 @@ checkLogin();
 renderUsername();
 // 退出登录功能
 logout();
+// 渲染顶部数据
+function renderOverview(overview) {
+  Object.keys(overview).forEach((key) => {
+    document.querySelector(`.${key}`).innerText = overview[key];
+  });
+}
 
 /* 
-  首页数据统计功能: 
+  首页数据渲染功能: 
     1. 调用接口
     2. 渲染数据
 */
@@ -16,9 +22,7 @@ async function getData() {
     url: "/dashboard",
   });
   // 2. 渲染数据
-  const overview = res.data.overview;
-  Object.keys(overview).forEach((key) => {
-    document.querySelector(`.${key}`).innerText = overview[key];
-  });
+  const { overview } = res.data;
+  renderOverview(overview);
 }
 getData();
