@@ -86,6 +86,62 @@ function renderYearSalary(year) {
   // 3. 调用setOption方法
   myChart.setOption(option);
 }
+// 渲染薪资分布
+function renderDistribute(salaryData) {
+  // 1. 实例化echart对象
+  const myChart = echarts.init(document.querySelector("#salary"));
+  // 2. 调整配置
+  const option = {
+    title: {
+      text: "班级薪资分布",
+      left: "10",
+      top: "15",
+    },
+    tooltip: {
+      trigger: "item",
+    },
+    legend: {
+      bottom: "5%",
+      left: "center",
+    },
+    series: [
+      {
+        name: "班级薪资分布",
+        type: "pie",
+        // 数组第一项是内半径，第二项是外半径
+        radius: ["54%", "70%"],
+        // 防重叠
+        avoidLabelOverlap: false,
+        // 图形样式
+        itemStyle: {
+          borderRadius: 15,
+          borderColor: "#fff",
+          borderWidth: 2,
+        },
+        // 说明文本
+        label: {
+          show: false,
+          position: "center",
+        },
+        // 高亮
+        emphasis: {},
+        // 说明文本指引线
+        labelLine: {
+          show: false,
+        },
+        data: salaryData.map((ele) => {
+          return {
+            value: ele.g_count + ele.b_count,
+            name: ele.label,
+          };
+        }),
+      },
+    ],
+    color: ["#fda224", "#5097ff", "#3abcfa", "#34d39a"],
+  };
+  // 3. 调用setOption方法
+  myChart.setOption(option);
+}
 
 /* 
   首页数据渲染功能: 
@@ -98,8 +154,9 @@ async function getData() {
     url: "/dashboard",
   });
   // 2. 渲染数据
-  const { overview, year } = res.data;
+  const { overview, year, salaryData } = res.data;
   renderOverview(overview);
   renderYearSalary(year);
+  renderDistribute(salaryData);
 }
 getData();
