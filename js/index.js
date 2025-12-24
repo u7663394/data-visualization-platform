@@ -142,6 +142,99 @@ function renderDistribute(salaryData) {
   // 3. 调用setOption方法
   myChart.setOption(option);
 }
+// 渲染每组薪资
+function renderGroup(groupData) {
+  // 1. 实例化echart对象
+  const myChart = echarts.init(document.querySelector("#lines"));
+  // 2. 调整配置
+  const option = {
+    grid: {
+      top: "30",
+      left: "70",
+      bottom: "50",
+      right: "30",
+    },
+    tooltip: {},
+    xAxis: {
+      axisLine: {
+        lineStyle: {
+          color: "#ccc",
+          type: "dashed",
+        },
+      },
+      type: "category",
+      data: groupData[1].map((ele) => ele.name),
+      axisLabel: {
+        color: "#999",
+      },
+    },
+    yAxis: {
+      type: "value",
+      splitLine: {
+        lineStyle: {
+          type: "dashed",
+        },
+      },
+    },
+    series: [
+      {
+        name: "期望薪资",
+        data: groupData[1].map((ele) => ele.hope_salary),
+        type: "bar",
+        itemStyle: {
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              { offset: 0, color: "#34d39a" },
+              { offset: 1, color: "rgba(52,211,154,0.2)" },
+            ],
+            global: false,
+          },
+        },
+      },
+      {
+        name: "实际薪资",
+        data: groupData[1].map((ele) => ele.salary),
+        type: "bar",
+        itemStyle: {
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              { offset: 0, color: "#499fee" },
+              { offset: 1, color: "rgba(73,159,238,0.2)" },
+            ],
+            global: false,
+          },
+        },
+      },
+    ],
+  };
+  // 3. 调用setOption方法
+  myChart.setOption(option);
+  // 4. 高亮切换
+  const btns = document.querySelector("#btns");
+  btns.addEventListener("click", (e) => {
+    if (e.target.classList.contains("btn")) {
+      btns.querySelector(".btn-blue").classList.remove("btn-blue");
+      e.target.classList.add("btn-blue");
+    }
+    // 5. 数据切换
+    const index = e.target.innerText;
+    option.xAxis.data = groupData[index].map((ele) => ele.name);
+    option.series[0].data = groupData[index].map((ele) => ele.hope_salary);
+    option.series[1].data = groupData[index].map((ele) => ele.salary);
+    // 6. 重新渲染
+    myChart.setOption(option);
+  });
+}
 
 /* 
   首页数据渲染功能: 
@@ -154,9 +247,10 @@ async function getData() {
     url: "/dashboard",
   });
   // 2. 渲染数据
-  const { overview, year, salaryData } = res.data;
+  const { overview, year, salaryData, groupData } = res.data;
   renderOverview(overview);
   renderYearSalary(year);
   renderDistribute(salaryData);
+  renderGroup(groupData);
 }
 getData();
