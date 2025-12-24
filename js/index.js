@@ -235,6 +235,74 @@ function renderGroup(groupData) {
     myChart.setOption(option);
   });
 }
+// 渲染性别薪资
+function renderGender(salaryData) {
+  // 1. 实例化echart对象
+  const myChart = echarts.init(document.querySelector("#gender"));
+  // 2. 调整配置
+  const option = {
+    tooltip: {},
+    title: [
+      {
+        text: "男女薪资分布",
+        left: 10,
+        top: 10,
+        textStyle: {
+          fontSize: 16,
+        },
+      },
+      {
+        text: "男生",
+        left: "50%",
+        top: "45%",
+        textStyle: {
+          fontSize: 12,
+        },
+      },
+      {
+        text: "女生",
+        left: "50%",
+        top: "85%",
+        textStyle: {
+          fontSize: 12,
+        },
+      },
+    ],
+    color: ["#fda224", "#5097ff", "#3abcfa", "#34d39a"],
+    series: [
+      {
+        type: "pie",
+        radius: ["20%", "30%"],
+        center: ["50%", "30%"],
+        label: {
+          show: true,
+        },
+        data: salaryData.map((ele) => {
+          return {
+            value: ele.b_count,
+            name: ele.label,
+          };
+        }),
+      },
+      {
+        type: "pie",
+        radius: ["20%", "30%"],
+        center: ["50%", "70%"],
+        label: {
+          show: true,
+        },
+        data: salaryData.map((ele) => {
+          return {
+            value: ele.g_count,
+            name: ele.label,
+          };
+        }),
+      },
+    ],
+  };
+  // 3. 调用setOption方法
+  myChart.setOption(option);
+}
 
 /* 
   首页数据渲染功能: 
@@ -252,5 +320,6 @@ async function getData() {
   renderYearSalary(year);
   renderDistribute(salaryData);
   renderGroup(groupData);
+  renderGender(salaryData);
 }
 getData();
