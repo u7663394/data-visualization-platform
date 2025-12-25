@@ -129,3 +129,19 @@ async function addStudent() {
 document.querySelector("#submit").addEventListener("click", () => {
   addStudent();
 });
+
+// 删除学生数据
+async function delStudent(id) {
+  // 1. 调接口
+  await axios.delete(`/students/${id}`);
+  // 2. 重新渲染
+  showToast("删除成功");
+  getData();
+}
+
+document.querySelector(".list").addEventListener("click", (e) => {
+  if (e.target.classList.contains("bi-trash")) {
+    const id = e.target.parentNode.parentNode.dataset.id;
+    delStudent(id);
+  }
+});
