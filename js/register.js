@@ -2,6 +2,7 @@
   用户注册功能：
     1. 收集并校验数据
     2. 提交
+    3. 清空输入内容
 */
 document.querySelector("#btn-register").addEventListener("click", async () => {
   // 1. 收集数据
@@ -26,6 +27,9 @@ document.querySelector("#btn-register").addEventListener("click", async () => {
   try {
     const res = await axios.post("/register", { username, password });
     showToast(res.message);
+    // 4. 清空输入内容
+    form.querySelector("#input-email").value = "";
+    form.querySelector("#input-password").value = "";
   } catch (error) {
     showToast(error.response.data.message);
   }
