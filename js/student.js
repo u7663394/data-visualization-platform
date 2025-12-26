@@ -45,9 +45,19 @@ async function getData() {
 }
 getData();
 
-// 显示弹框
+// 点击加号
 const modal = new bootstrap.Modal(document.querySelector("#modal"));
 document.querySelector("#openModal").addEventListener("click", () => {
+  // 1. 重置标题
+  document.querySelector(".modal-title").innerText = "添加学员";
+  // 2. 清空内容
+  document.querySelector("#form").reset();
+  // 3. 清空籍贯
+  citySelect.innerHTML = `<option value="">--城市--</option>`;
+  areaSelect.innerHTML = `<option value="">--地区--</option>`;
+  // 4. 删除id
+  document.querySelector("#modal").dataset.id = "";
+  // 4. 显示弹框
   modal.show();
 });
 
@@ -127,7 +137,12 @@ async function addStudent() {
 }
 
 document.querySelector("#submit").addEventListener("click", () => {
-  addStudent();
+  const modalDom = document.querySelector("#modal");
+  if (modalDom.dataset.id) {
+    saveEdit();
+  } else {
+    addStudent();
+  }
 });
 
 // 删除学生数据
@@ -139,9 +154,94 @@ async function delStudent(id) {
   getData();
 }
 
+// 编辑学生数据
+async function editStudent(id) {
+  // 1. 调接口
+  const res = await axios.get(`/students/${id}`);
+  // 2.1. 填充 title
+  document.querySelector(".modal-title").innerText = "修改学员";
+  // 2.2. 填充 value
+  const keyArr = ["name", "age", "group", "hope_salary", "salary"];
+  keyArr.forEach((key) => {
+    return (document.querySelector(`[name=${key}]`).value = res.data[key]);
+  });
+  // 2.3. 填充 gender
+  const chks = document.querySelectorAll("[name=gender]");
+  chks[res.data.gender].checked = true;
+  // 2.4. 填充籍贯-省
+  const { province, city, area } = res.data;
+  provSelect.value = province;
+  // 2.4. 填充籍贯-市
+  const cityRes = await axios.get("/api/city", {
+    params: {
+      pname: province,
+    },
+  });
+  const cityHtml = cityRes.list
+    .map((ele) => {
+      return `
+      <option value="${ele}">${ele}</option>`;
+    })
+    .join("");
+  citySelect.innerHTML = `<option value="">--城市--</option>${cityHtml}`;
+  citySelect.value = city;
+  // 2.4. 填充籍贯-区
+  const areaRes = await axios.get("/api/area", {
+    params: {
+      pname: provSelect.value,
+      cname: citySelect.value,
+    },
+  });
+  const areaHtml = areaRes.list
+    .map((ele) => {
+      return `
+       <option value="${ele}">${ele}</option>`;
+    })
+    .join("");
+  areaSelect.innerHTML = `<option value="">--地区--</option>${areaHtml}`;
+  areaSelect.value = area;
+  // 3. 显示 Modal
+  modal.show();
+  // 4. 给弹框绑定id (用来区分edit和add)
+  const modalDom = document.querySelector("#modal");
+  modalDom.dataset.id = id;
+}
+
+// 保存修改数据
+async function saveEdit() {
+  // 1. 收集表单内容
+  const form = document.querySelector("#form");
+  const data = serialize(form, { hash: true, empty: true });
+  // 2. 提交请求
+  try {
+    data.age = +data.age;
+    data.gender = +data.gender;
+    data.hope_salary = +data.hope_salary;
+    data.salary = +data.salary;
+    data.group = +data.group;
+    const modalDom = document.querySelector("#modal");
+    const res = await axios.put(`/students/${modalDom.dataset.id}`, data);
+    // 3. 成功逻辑
+    showToast(res.message);
+    modal.hide();
+    // 4. 重新渲染
+    getData();
+  } catch (error) {
+    // 5. 失败逻辑
+    showToast(error.response.data.message);
+    modal.hide();
+  }
+}
+
 document.querySelector(".list").addEventListener("click", (e) => {
+  // 删除标签
   if (e.target.classList.contains("bi-trash")) {
     const id = e.target.parentNode.parentNode.dataset.id;
     delStudent(id);
+  }
+  // 编辑标签
+  if (e.target.classList.contains("bi-pen")) {
+    const id = e.target.parentNode.parentNode.dataset.id;
+    editStudent(id);
   }
 });
