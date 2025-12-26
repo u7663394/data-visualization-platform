@@ -242,6 +242,6 @@ document.querySelector(".list").addEventListener("click", (e) => {
   // 编辑标签
   if (e.target.classList.contains("bi-pen")) {
     const id = e.target.parentNode.parentNode.dataset.id;
-    editStudent(id);
+    editStudent(id); 
   }
 });
