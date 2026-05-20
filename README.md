@@ -2,6 +2,14 @@
 
 A static front-end dashboard for displaying student employment data. The project includes authentication pages, an overview dashboard with charts, and a student management page with CRUD interactions.
 
+## Live Demo
+
+The project has been deployed on GitHub Pages and is available at:
+
+```text
+https://u7663394.github.io/data-visualization-platform/
+```
+
 ## Features
 
 - User registration and login
