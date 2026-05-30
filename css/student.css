@@ -2,49 +2,166 @@
   font-size: 12px;
   margin: 0;
   padding: 5px 20px;
-  color: #999;
+  color: var(--app-muted);
 }
+
 .card i:hover {
   cursor: pointer;
 }
+
 .bt-1 {
   margin-top: 4px;
 }
+
 .card-fluid {
-  border: none;
-  padding: 15px;
+  border: 1px solid rgba(228, 235, 240, 0.88);
+  padding: 0;
 }
+
+.card-fluid .table-responsive {
+  min-height: 680px !important;
+}
+
 .card .table th {
-  border-color: transparent;
+  border-color: var(--app-line);
 }
+
+.card .table th:first-child,
+.card .table td:first-child {
+  padding-left: 24px;
+}
+
+.card .table th:last-child,
+.card .table td:last-child {
+  padding-right: 24px;
+}
+
+.card .table tbody td:first-child {
+  color: var(--app-ink);
+  font-weight: 800;
+}
+
+.card .table tbody td:nth-child(4) {
+  color: var(--app-primary);
+  font-weight: 760;
+}
+
+.card .table tbody td:nth-child(5),
+.card .table tbody td:nth-child(6) {
+  font-variant-numeric: tabular-nums;
+}
+
+#openModal {
+  width: 46px;
+  height: 46px;
+  display: inline-grid;
+  place-items: center;
+  color: #ffffff;
+  background: var(--app-primary);
+  border: 0;
+  border-radius: var(--app-radius) !important;
+  box-shadow: 0 16px 28px rgba(15, 118, 110, 0.24);
+}
+
+#openModal:hover {
+  background: var(--app-primary-dark);
+}
+
+.total {
+  display: inline-grid;
+  min-width: 26px;
+  height: 24px;
+  place-items: center;
+  padding: 0 8px;
+  color: #ffffff;
+  background: var(--app-primary);
+  border-radius: 999px;
+}
+
 .form-group {
   display: flex;
   align-items: center;
   height: calc(1.5em + 1.5rem + 2px);
+  margin-bottom: 16px;
 }
+
 .form-group > label {
   width: 100px;
   text-align: right;
   padding-right: 10px;
   margin-bottom: 0;
+  color: var(--app-muted);
+  font-weight: 700;
 }
+
 .form-group > input {
   flex: 1;
 }
+
 .form-group .input {
   flex: 1;
   padding-left: 10px;
   display: flex;
+  align-items: center;
 }
+
 .form-group .form-check {
   margin-bottom: 0;
   margin-right: 30px;
 }
+
+.form-check-input:checked {
+  background-color: var(--app-primary);
+  border-color: var(--app-primary);
+}
+
 .form-group .input select {
   width: 140px;
   margin-right: 20px;
 }
+
 .custom-select {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23999999' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
   background-size: 12px 12px;
+}
+
+.modal-body {
+  padding-top: 24px;
+}
+
+.modal-footer .btn-secondary {
+  color: var(--app-muted);
+  background: #eef4f6;
+  border-color: #dce6ec;
+}
+
+@media (max-width: 767.98px) {
+  .total {
+    color: #ffffff;
+    background: var(--app-primary);
+  }
+
+  .form-group {
+    height: auto;
+    display: block;
+  }
+
+  .form-group > label {
+    width: auto;
+    display: block;
+    margin-bottom: 8px;
+    padding-right: 0;
+    text-align: left;
+  }
+
+  .form-group .input {
+    padding-left: 0;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .form-group .input select {
+    width: 100%;
+    margin-right: 0;
+  }
 }

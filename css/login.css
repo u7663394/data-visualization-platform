@@ -1,13 +1,114 @@
-.form-control:focus {
-  border-color:#e0e6ed;
-  box-shadow: none;
+body.application {
+  background:
+    radial-gradient(circle at 16% 18%, rgba(245, 158, 11, 0.16), transparent 18rem),
+    radial-gradient(circle at 86% 10%, rgba(15, 118, 110, 0.18), transparent 22rem),
+    linear-gradient(135deg, #081723 0%, #102331 48%, #edf4f6 48.2%, #f8fafb 100%);
 }
-.form-control, .form-group, .input-group {
-  transition: none !important;
+
+body.application .container-application {
+  padding-right: 0;
 }
+
+body.application-offset .container-application:before {
+  display: none;
+}
+
+body.application .main-content {
+  min-height: 100vh;
+}
+
+body.application .page-content {
+  width: 100%;
+  padding: 0 20px;
+}
+
+.login-form,
+.register-form {
+  position: relative;
+}
+
+.login-form:before,
+.register-form:before {
+  content: "就业数据可视平台";
+  display: inline-flex;
+  margin-bottom: 18px;
+  padding: 6px 10px;
+  color: var(--app-primary);
+  background: var(--app-primary-soft);
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.card.shadow {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: var(--app-radius);
+  box-shadow: 0 28px 80px rgba(8, 23, 35, 0.28) !important;
+}
+
+.card.shadow:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--app-primary), var(--app-accent), var(--app-secondary));
+}
+
+.card-body .h3 {
+  color: var(--app-ink);
+  font-size: clamp(1.8rem, 1.1rem + 1.1vw, 2.35rem);
+  font-weight: 850;
+}
+
+.form-control,
+.form-group,
+.input-group {
+  transition: border-color 0.16s var(--app-ease), box-shadow 0.16s var(--app-ease), background-color 0.16s var(--app-ease) !important;
+}
+
+.form-control-label {
+  color: var(--app-ink);
+  font-weight: 760;
+}
+
+.input-group-merge {
+  box-shadow: 0 10px 24px rgba(15, 35, 50, 0.05);
+}
+
+.input-group-merge .input-group-text,
+.input-group-merge .form-control {
+  background: #fbfdfe;
+}
+
+.btn.rounded-pill {
+  min-height: 42px;
+  padding-left: 18px;
+  padding-right: 14px;
+  border-radius: 8px !important;
+}
+
+.card-footer {
+  background: #f8fafb;
+}
+
 .text-blue {
-  color: #499FEE;
+  color: var(--app-primary) !important;
 }
+
 .text-blue:hover {
-  color: #499FEE;
+  color: var(--app-primary-dark) !important;
+}
+
+@media (max-width: 767.98px) {
+  body.application {
+    background:
+      linear-gradient(180deg, #102331 0%, #102331 28%, #edf4f6 28.2%, #f8fafb 100%);
+  }
+
+  body.application .page-content {
+    padding: 0 14px;
+  }
 }

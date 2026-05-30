@@ -4,6 +4,19 @@ checkLogin();
 renderUsername();
 // 退出登录功能
 logout();
+const chartPalette = ["#0f766e", "#2563eb", "#f59e0b", "#64748b"];
+const chartTextColor = "#15202b";
+const chartMutedColor = "#647282";
+const chartLineColor = "#dfe8ee";
+const chartTooltip = {
+  borderWidth: 0,
+  backgroundColor: "rgba(8, 23, 35, 0.92)",
+  textStyle: {
+    color: "#fff",
+  },
+  extraCssText: "box-shadow: 0 14px 34px rgba(8,23,35,.22); border-radius: 8px;",
+};
+
 // 渲染顶部数据
 function renderOverview(overview) {
   Object.keys(overview).forEach((key) => {
@@ -20,25 +33,44 @@ function renderYearSalary(year) {
       text: "2026全学科薪资走势",
       top: "15",
       left: "12",
+      textStyle: {
+        color: chartTextColor,
+        fontSize: 16,
+        fontWeight: 700,
+      },
     },
     grid: {
-      top: "20%",
+      top: "22%",
+      left: "8%",
+      right: "5%",
+      bottom: "12%",
+      containLabel: true,
     },
     xAxis: {
       type: "category",
+      boundaryGap: false,
       axisLine: {
         lineStyle: {
-          color: "#ccc",
-          type: "dashed",
+          color: chartLineColor,
         },
+      },
+      axisTick: {
+        show: false,
+      },
+      axisLabel: {
+        color: chartMutedColor,
       },
       data: year.map((ele) => ele.month),
     },
     yAxis: {
       type: "value",
+      axisLabel: {
+        color: chartMutedColor,
+      },
       splitLine: {
         lineStyle: {
           type: "dashed",
+          color: chartLineColor,
         },
       },
     },
@@ -55,15 +87,21 @@ function renderYearSalary(year) {
             x2: 0,
             y2: 1,
             colorStops: [
-              { offset: 0, color: "#80c1fa" },
+              { offset: 0, color: "rgba(15,118,110,0.22)" },
               { offset: 1, color: "rgba(255,255,255,0)" },
             ],
             global: false,
           },
         },
-        symbolSize: 10,
+        symbol: "circle",
+        symbolSize: 8,
+        itemStyle: {
+          color: "#0f766e",
+          borderColor: "#ffffff",
+          borderWidth: 3,
+        },
         lineStyle: {
-          width: 5,
+          width: 4,
           color: {
             type: "linear",
             x: 0,
@@ -71,8 +109,8 @@ function renderYearSalary(year) {
             x2: 1,
             y2: 0,
             colorStops: [
-              { offset: 0, color: "#479dee" },
-              { offset: 1, color: "#5c75f0" },
+              { offset: 0, color: "#0f766e" },
+              { offset: 1, color: "#2563eb" },
             ],
             global: false,
           },
@@ -81,6 +119,7 @@ function renderYearSalary(year) {
     ],
     tooltip: {
       trigger: "axis",
+      ...chartTooltip,
     },
   };
   // 3. 调用setOption方法
@@ -96,13 +135,24 @@ function renderDistribute(salaryData) {
       text: "班级薪资分布",
       left: "10",
       top: "15",
+      textStyle: {
+        color: chartTextColor,
+        fontSize: 16,
+        fontWeight: 700,
+      },
     },
     tooltip: {
       trigger: "item",
+      ...chartTooltip,
     },
     legend: {
       bottom: "5%",
       left: "center",
+      itemWidth: 10,
+      itemHeight: 10,
+      textStyle: {
+        color: chartMutedColor,
+      },
     },
     series: [
       {
@@ -114,9 +164,9 @@ function renderDistribute(salaryData) {
         avoidLabelOverlap: false,
         // 图形样式
         itemStyle: {
-          borderRadius: 15,
+          borderRadius: 8,
           borderColor: "#fff",
-          borderWidth: 2,
+          borderWidth: 4,
         },
         // 说明文本
         label: {
@@ -137,7 +187,7 @@ function renderDistribute(salaryData) {
         }),
       },
     ],
-    color: ["#fda224", "#5097ff", "#3abcfa", "#34d39a"],
+    color: chartPalette,
   };
   // 3. 调用setOption方法
   myChart.setOption(option);
@@ -153,26 +203,33 @@ function renderGroup(groupData) {
       left: "70",
       bottom: "50",
       right: "30",
+      containLabel: true,
     },
-    tooltip: {},
+    tooltip: chartTooltip,
     xAxis: {
       axisLine: {
         lineStyle: {
-          color: "#ccc",
-          type: "dashed",
+          color: chartLineColor,
         },
+      },
+      axisTick: {
+        show: false,
       },
       type: "category",
       data: groupData[1].map((ele) => ele.name),
       axisLabel: {
-        color: "#999",
+        color: chartMutedColor,
       },
     },
     yAxis: {
       type: "value",
+      axisLabel: {
+        color: chartMutedColor,
+      },
       splitLine: {
         lineStyle: {
           type: "dashed",
+          color: chartLineColor,
         },
       },
     },
@@ -181,7 +238,10 @@ function renderGroup(groupData) {
         name: "期望薪资",
         data: groupData[1].map((ele) => ele.hope_salary),
         type: "bar",
+        barMaxWidth: 24,
+        barGap: "36%",
         itemStyle: {
+          borderRadius: [6, 6, 0, 0],
           color: {
             type: "linear",
             x: 0,
@@ -189,8 +249,8 @@ function renderGroup(groupData) {
             x2: 0,
             y2: 1,
             colorStops: [
-              { offset: 0, color: "#34d39a" },
-              { offset: 1, color: "rgba(52,211,154,0.2)" },
+              { offset: 0, color: "#0f766e" },
+              { offset: 1, color: "rgba(15,118,110,0.22)" },
             ],
             global: false,
           },
@@ -200,7 +260,9 @@ function renderGroup(groupData) {
         name: "实际薪资",
         data: groupData[1].map((ele) => ele.salary),
         type: "bar",
+        barMaxWidth: 24,
         itemStyle: {
+          borderRadius: [6, 6, 0, 0],
           color: {
             type: "linear",
             x: 0,
@@ -208,8 +270,8 @@ function renderGroup(groupData) {
             x2: 0,
             y2: 1,
             colorStops: [
-              { offset: 0, color: "#499fee" },
-              { offset: 1, color: "rgba(73,159,238,0.2)" },
+              { offset: 0, color: "#f59e0b" },
+              { offset: 1, color: "rgba(245,158,11,0.22)" },
             ],
             global: false,
           },
@@ -241,7 +303,7 @@ function renderGender(salaryData) {
   const myChart = echarts.init(document.querySelector("#gender"));
   // 2. 调整配置
   const option = {
-    tooltip: {},
+    tooltip: chartTooltip,
     title: [
       {
         text: "男女薪资分布",
@@ -249,6 +311,8 @@ function renderGender(salaryData) {
         top: 10,
         textStyle: {
           fontSize: 16,
+          color: chartTextColor,
+          fontWeight: 700,
         },
       },
       {
@@ -257,6 +321,8 @@ function renderGender(salaryData) {
         top: "45%",
         textStyle: {
           fontSize: 12,
+          color: chartMutedColor,
+          fontWeight: 700,
         },
       },
       {
@@ -265,10 +331,12 @@ function renderGender(salaryData) {
         top: "85%",
         textStyle: {
           fontSize: 12,
+          color: chartMutedColor,
+          fontWeight: 700,
         },
       },
     ],
-    color: ["#fda224", "#5097ff", "#3abcfa", "#34d39a"],
+    color: chartPalette,
     series: [
       {
         type: "pie",
@@ -276,6 +344,12 @@ function renderGender(salaryData) {
         center: ["50%", "30%"],
         label: {
           show: true,
+          color: chartMutedColor,
+        },
+        itemStyle: {
+          borderRadius: 6,
+          borderColor: "#fff",
+          borderWidth: 3,
         },
         data: salaryData.map((ele) => {
           return {
@@ -290,6 +364,12 @@ function renderGender(salaryData) {
         center: ["50%", "70%"],
         label: {
           show: true,
+          color: chartMutedColor,
+        },
+        itemStyle: {
+          borderRadius: 6,
+          borderColor: "#fff",
+          borderWidth: 3,
         },
         data: salaryData.map((ele) => {
           return {
@@ -371,6 +451,7 @@ function renderProvince(provinceData) {
       textStyle: {
         color: "#fff",
       },
+      extraCssText: chartTooltip.extraCssText,
     },
     visualMap: {
       min: 0,
@@ -379,7 +460,7 @@ function renderProvince(provinceData) {
       bottom: "20",
       text: ["6", "0"],
       inRange: {
-        color: ["#ffffff", "#0075F0"],
+        color: ["#eef7f6", "#0f766e"],
       },
       show: true,
       left: 40,
@@ -392,21 +473,21 @@ function renderProvince(provinceData) {
         normal: {
           show: true,
           fontSize: "10",
-          color: "rgba(0,0,0,0.7)",
+          color: "rgba(21,32,43,0.72)",
         },
       },
       itemStyle: {
         normal: {
-          borderColor: "rgba(0, 0, 0, 0.2)",
-          color: "#e0ffff",
+          borderColor: "rgba(15, 35, 50, 0.16)",
+          color: "#eef7f6",
         },
         emphasis: {
-          areaColor: "#34D39A",
+          areaColor: "#f59e0b",
           shadowOffsetX: 0,
           shadowOffsetY: 0,
           shadowBlur: 20,
           borderWidth: 0,
-          shadowColor: "rgba(0, 0, 0, 0.5)",
+          shadowColor: "rgba(8, 23, 35, 0.24)",
         },
       },
     },
